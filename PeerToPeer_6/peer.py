@@ -4,18 +4,18 @@ class Peer:
         self.values = values
         self.peers = []
 
-    def add_peer(self, peer):
-        if peer not in self.peers:
-            self.peers.append(peer)
-            peer.add_peer(self)
-
     def remove_peer(self, peer):
         if peer in self.peers:
             self.peers.remove(peer)
             peer.remove_peer(self)
 
+    def add_new_peer(self, peer):
+        if peer not in self.peers:
+            self.peers.append(peer)
+            peer.add_new_peer(self)
+
     def find_values(self, target_values):
-        result = {}
+        res = {}
         for peer in self.peers:
-            result[peer.id] = [x for x in peer.values if x in target_values]
-        return result
+            res[peer.id] = [x for x in peer.values if x in target_values]
+        return res
