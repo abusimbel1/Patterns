@@ -1,6 +1,6 @@
 from filters import FloatFilter, IntFilter, RangeFilter, AbsFilter, FilterPipe
 
-arr_1 = [-1, -0.5, 0, 0.5, 1]
+arr_1 = [-1, -0.3, 0, 0.1, 1]
 if __name__ == '__main__':
 
     positive_int_pipe = FilterPipe()
@@ -9,5 +9,5 @@ if __name__ == '__main__':
     negative_float_pipe = FilterPipe()
     negative_float_pipe.add_filter(AbsFilter(-1), FloatFilter())
 
-    print('res 1', positive_int_pipe.filter(arr_1))
-    print('res 2', negative_float_pipe.filter(arr_1))
+    print('Result for first case', positive_int_pipe.filter(arr_1))
+    print('Result for second case', negative_float_pipe.filter(arr_1))
