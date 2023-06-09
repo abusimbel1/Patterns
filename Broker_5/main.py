@@ -1,24 +1,24 @@
 from broker import Broker, Room
 
 
-def handle_big(sound):
-    print(f'HANDLE {sound.upper()}')
+def upper_case(text):
+    print(f'MANIPULATE {text.upper()}')
 
 
-def handle_small(sound):
-    print(f'handle {sound.lower()}')
+def lower_case(text):
+    print(f'manipulate {text.lower()}')
 
 
 if __name__ == '__main__':
     broker = Broker()
 
-    room_1 = 'Room for cats'
-    room_2 = 'Room for dogs'
-    broker.add_room(room_1, handle_big)
-    broker.add_room(room_1, handle_small)
+    loby_1 = 'Loby for even numbers'
+    loby_2 = 'Loby for odd numbers'
+    broker.add_room(loby_1, upper_case)
+    broker.add_room(loby_1, lower_case)
 
-    broker.add_room(room_2, handle_small)
-    broker.add_room(room_2, handle_small)
+    broker.add_room(loby_2, upper_case)
+    broker.add_room(loby_2, lower_case)
 
-    broker.post(room_1, 'meow meow')
-    broker.post(room_1, 'bark bark')
+    broker.post(loby_1, '2 4')
+    broker.post(loby_2, '1 3')
