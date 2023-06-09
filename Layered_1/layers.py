@@ -1,60 +1,60 @@
 class DataLayer:
-    animals = []
+    items = []
 
     def __init__(self):
         self.connect_db()
 
     def connect_db(self):
-        self.animals = [
-            Animal("Dog", "Woof"),
-            Animal("Cat", "Meow"),
-            Animal("Lion", "Roar"),
-            Animal("Tiger", "Roar"),
+        self.items = [
+            Item("One", "1"),
+            Item("Two", "2"),
+            Item("Three", "3"),
+            Item("Four", "4"),
         ]
 
-    def get_animal_sound(self, animal_name):
-        return next((animal.sound for animal in self.animals if animal.name == animal_name), None)
+    def get_item_value(self, item_key):
+        return next((item.pair_value for item in self.items if item.pair_key == item_key), None)
 
-    def get_animals_names(self):
-        return [animal.name for animal in self.animals]
+    def get_items_keys(self):
+        return [item.pair_key for item in self.items]
 
 
-class Animal:
-    sound = None
-    name = None
+class Item:
+    pair_key = None
+    pair_value = None
 
-    def __init__(self, name, sound=None):
-        self.name = name
-        self.sound = sound
+    def __init__(self, pair_key, pair_value=None):
+        self.pair_key = pair_key
+        self.pair_value = pair_value
 
 
 class ApplicationLayer:
     is_init = False
-    db = None
+    database = None
     names_cache = None
 
     def __init__(self, db_layer: DataLayer):
-        self.db = db_layer
+        self.database = db_layer
     
     def load_cache(self):
         if(self.is_init):
             return False
         
-        self.names_cache = self.db.get_animals_names()
+        self.names_cache = self.database.get_items_keys()
         self.is_init = True
     
     def cache_init_protection(self):
         if(not self.is_init):
             self.load_cache()
 
-    def get_animal_sound(self, animal_name):
+    def get_item_value(self, item_key):
         self.cache_init_protection()
         try:
-            if animal_name not in self.names_cache: 
+            if item_key not in self.names_cache: 
                 return None
             
-            print('self.db.get_animal_sound(animal_name)', self.db.get_animal_sound(animal_name))
-            return self.db.get_animal_sound(animal_name)
+            print('Pair value:', self.database.get_item_value(item_key))
+            return self.database.get_item_value(item_key)
         except:
             return None
 
@@ -63,10 +63,10 @@ class PresentationLayer:
     def __init__(self, application: ApplicationLayer) -> None:
         self.application = application
 
-    def get_animal_sound(self):
-        animal_name = input("Animal name:")
-        search_res = self.application.get_animal_sound(animal_name)
+    def get_item_value(self):
+        item_key = input("Item key:")
+        search_res = self.application.get_item_value(item_key)
         if search_res is None:
-            print(f'No [{animal_name}] sound in db')
+            print(f'No [{item_key}] values in database')
         else:
-            print(f'[{animal_name}] says [{search_res}]')
+            print(f'[{item_key}] key paired with [{search_res}]')
