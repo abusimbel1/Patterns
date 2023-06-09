@@ -1,7 +1,22 @@
 import asyncio
 
+class Master:
+    NUM_OF_PATCHES = 3
 
-def is_prime(n):
+    def __init__(self) -> None:
+        self.workers = [self.operation for _ in range(self.NUM_OF_PATCHES)]
+
+    async def operation(self, values):
+        await asyncio.sleep(1)
+        return [(value, number_is_prime(value)) for value in values]
+
+    async def calculateResult(self, values):
+        sublists = [values[i::self.NUM_OF_PATCHES]
+                    for i in range(self.NUM_OF_PATCHES)]
+
+        return await asyncio.gather(*[self.operation(sublist) for sublist in sublists])
+
+def number_is_prime(n):
     if (n < 1 or not float(n).is_integer()):
         return False
 
@@ -9,20 +24,3 @@ def is_prime(n):
         if (n % i) == 0:
             return False
     return True
-
-
-class Master:
-    WORKERS_AMOUNT = 5
-
-    def __init__(self) -> None:
-        self.workers = [self.operation for _ in range(self.WORKERS_AMOUNT)]
-
-    async def operation(self, values):
-        await asyncio.sleep(1)
-        return [(value, is_prime(value)) for value in values]
-
-    async def calculate(self, values):
-        sublists = [values[i::self.WORKERS_AMOUNT]
-                    for i in range(self.WORKERS_AMOUNT)]
-
-        return await asyncio.gather(*[self.operation(sublist) for sublist in sublists])
