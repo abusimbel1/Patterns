@@ -1,24 +1,24 @@
 import urllib.request
 import json
 
+def get_name():
+    url = 'http://localhost:4444/get_name'
+    response = urllib.request.urlopen(url)
+    return response.read().decode()
 
-def post_message(new_sound):
-    url = 'http://localhost:3000/set_sound'
-    data = {'sound': new_sound}
+def post_message(new_name):
+    url = 'http://localhost:4444/set_name'
+    data = {'name': new_name}
     data = json.dumps(data).encode()
     req = urllib.request.Request(url, data=data, headers={
                                  'Content-Type': 'application/json'})
     response = urllib.request.urlopen(req)
     return response
 
-def get_sound():
-    url = 'http://localhost:3000/get_sound'
-    response = urllib.request.urlopen(url)
-    return response.read().decode()
 
 if __name__ == '__main__':
     while True:
-        new_sound = input('New sound or enter: ').strip()
-        if new_sound:
-            post_message(new_sound)
-        print('Current sound:', get_sound())
+        new_name = input('Enter new name...').strip()
+        if new_name:
+            post_message(new_name)
+        print('New Name:', get_name())
